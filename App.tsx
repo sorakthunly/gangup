@@ -1,19 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStore } from 'redux'
+import { ApplicationProvider, Layout } from 'react-native-ui-kitten';
+import { light as lightTheme, mapping } from '@eva-design/eva';
+import { NativeRouter } from 'react-router-native';
+import { Provider } from 'react-redux';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
-}
+import reducers from './src/redux/reducers';
+import Routes from './src/routes/Routes';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const store = createStore(reducers);
+
+const ApplicationContent = () => (
+	<Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+		<Routes />
+	</Layout>
+);
+
+const App = () => (
+	<NativeRouter>
+		<Provider store={store}>
+			<ApplicationProvider mapping={mapping} theme={lightTheme}>
+				<ApplicationContent />
+			</ApplicationProvider>
+		</Provider>
+	</NativeRouter>
+);
+
+export default App;
