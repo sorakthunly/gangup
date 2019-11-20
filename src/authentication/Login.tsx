@@ -13,6 +13,7 @@ const Login = props => {
             <Text>This is Login page!!!</Text>
             <Text>{`isLoading: ${isLoading}`}</Text>
             <Link to="/my-events"><Text>Go to my event</Text></Link>
+            <Link to="/public-events"><Text>Go to public event</Text></Link>
             <Button onPress={() => login()}>Login</Button>
         </Layout>
     );
