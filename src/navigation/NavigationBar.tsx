@@ -3,10 +3,10 @@ import {
     BottomNavigation,
     BottomNavigationTab,
 } from 'react-native-ui-kitten';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { withRouter } from 'react-router-native';
 
-import { MY_EVENTS_URL, PUBLIC_EVENTS_URL } from '../routes/urlMap';
+import { MY_EVENTS_URL, NEW_EVENT_URL, PUBLIC_EVENTS_URL } from '../routes/urlMap';
 
 const styles = StyleSheet.create({
     bottomNavigation: {
@@ -16,7 +16,14 @@ const styles = StyleSheet.create({
     indicator: { backgroundColor: 'black' },
 });
 
-const navTabsUrl = [MY_EVENTS_URL, PUBLIC_EVENTS_URL];
+const navTabsUrl = [MY_EVENTS_URL, NEW_EVENT_URL, PUBLIC_EVENTS_URL];
+
+const NewEventIcon = (style) => (
+    <Image
+        style={style}
+        source={{ uri: 'https://akveo.github.io/eva-icons/outline/png/128/plus-circle-outline.png' }}
+    />
+);
 
 const NagigationBar = props => {
     const { history, location: { pathname } } = props;
@@ -39,8 +46,12 @@ const NagigationBar = props => {
             indicatorStyle={styles.indicator}
             selectedIndex={index}
             onSelect={handleSelect}>
-            <BottomNavigationTab title='My Events'/>
-            <BottomNavigationTab title='All Public Events'/>
+            <BottomNavigationTab title="My Events"/>
+            <BottomNavigationTab
+                title="Create New Event"
+                icon={NewEventIcon}
+            />
+            <BottomNavigationTab title="All Public Events"/>
         </BottomNavigation>
     );
 }
