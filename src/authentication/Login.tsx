@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Input, Layout, Spinner } from 'react-native-ui-kitten';
+import { Button, Input, Layout } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
 
+import CenteredSpinner from '../UI/spinner/CenteredSpinner';
 import { loginAsync as loginAction } from './authenticationActions';
 
 const styles = StyleSheet.create({
@@ -25,13 +26,7 @@ const Login = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    if (isLoading) {
-        return (
-            <Layout style={styles.container}>
-                <Spinner size="giant" />
-            </Layout>
-        );
-    }
+    if (isLoading) return <CenteredSpinner />;
 
     return (
         <Layout style={styles.container}>

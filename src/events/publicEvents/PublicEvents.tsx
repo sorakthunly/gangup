@@ -8,7 +8,7 @@ import EventCard from '../components/EventCard';
 import { loadPublicEventsAsync } from '../eventsActions';
 import { reformat } from '../../utils/timeHelpers';
 
-const MyEvents = props => {
+const PublicEvent = props => {
     const {
         events,
         isLoading,
@@ -24,7 +24,7 @@ const MyEvents = props => {
     return (
         <BaseLayout>
             <Text h3 style={{ textAlign: 'center', marginTop: 30 }}>
-                My Events
+                Join Public Events
             </Text>
             {
                 events.map(event => (
@@ -51,4 +51,4 @@ const mapDispatchToProps = dispatch => ({
     loadPublicEvents: () => dispatch(loadPublicEventsAsync()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyEvents);
+export default connect(mapStateToProps, mapDispatchToProps)(PublicEvent);
