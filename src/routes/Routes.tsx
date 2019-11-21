@@ -5,7 +5,7 @@ import Login from '../authentication/Login';
 import MyEvents from '../events/myEvents/MyEvents';
 import NewEvent from '../events/newEvent/NewEvent';
 import ProtectedRoute from './components/ProtectedRoute';
-import PublicEvents from '../events/publicEvents/publicEvents';
+import PublicEvents from '../events/publicEvents/PublicEvents';
 import {
     LOGIN_URL,
     MY_EVENTS_URL,
