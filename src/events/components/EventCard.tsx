@@ -1,13 +1,18 @@
 import React from 'react';
 import { Card, Text } from 'react-native-elements';
 import { Button, Layout } from 'react-native-ui-kitten';
+import { withRouter } from 'react-router-native';
+
+import { EVENT_BASE_URL } from '../../routes/urlMap';
 
 const EventCard = props => {
     const {
+        id,
         name,
         description,
         startTime,
         finishTime,
+        history,
     } = props;
 
     return (
@@ -27,6 +32,7 @@ const EventCard = props => {
             </Layout>
             <Button
                 style={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+                onPress={() => history.push(`${EVENT_BASE_URL}/${id}`)}
             >
                 View Event
             </Button>
@@ -34,4 +40,4 @@ const EventCard = props => {
     );
 };
 
-export default EventCard;
+export default withRouter(EventCard);

@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { format } from 'date-fns'
 import { Text } from 'react-native-elements';
 
 import BaseLayout from '../../baseLayout/BaseLayout';
 import CenteredSpinner from '../../UI/spinner/CenteredSpinner';
 import EventCard from '../components/EventCard';
 import { loadPublicEventsAsync } from '../eventsActions';
-
-const DATE_FORMAT = 'MM/dd/yyyy';
+import { reformat } from '../../utils/timeHelpers';
 
 const PublicEvent = props => {
     const {
@@ -32,10 +30,11 @@ const PublicEvent = props => {
                 events.map(event => (
                     <EventCard
                         key={event.id}
+                        id={event.id}
                         name={event.name}
                         description={event.description}
-                        startTime={format(new Date(event.startTime), DATE_FORMAT)}
-                        finishTime={format(new Date(event.finishTime), DATE_FORMAT)}
+                        startTime={reformat(event.startTime)}
+                        finishTime={reformat(event.finishTime)}
                     />
                 ))
             }
