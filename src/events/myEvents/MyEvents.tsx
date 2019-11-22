@@ -26,8 +26,11 @@ const MyEvents = props => {
             <Text h3 style={{ textAlign: 'center', marginTop: 30 }}>
                 My Events
             </Text>
+            <Text style={{ marginTop: 10, marginLeft: 5, fontSize: 20, opacity: 0.6 }}>
+                Going:
+            </Text>
             {
-                events.map(event => (
+                events.slice(0, 1).map(event => (
                     <EventCard
                         key={event.id}
                         id={event.id}
@@ -35,6 +38,39 @@ const MyEvents = props => {
                         description={event.description}
                         startTime={reformat(event.startTime)}
                         finishTime={reformat(event.finishTime)}
+                        image={event.image}
+                    />
+                ))
+            }
+            <Text style={{ marginTop: 20, marginLeft: 5, fontSize: 20, opacity: 0.6 }}>
+                Pending:
+            </Text>
+            {
+                events.slice(1, 3).map(event => (
+                    <EventCard
+                        key={event.id}
+                        id={event.id}
+                        name={event.name}
+                        description={event.description}
+                        startTime={reformat(event.startTime)}
+                        finishTime={reformat(event.finishTime)}
+                        image={event.image}
+                    />
+                ))
+            }
+            <Text style={{ marginTop: 20, marginLeft: 5, fontSize: 20, opacity: 0.6 }}>
+                Created:
+            </Text>
+            {
+                events.slice(2, 3).map(event => (
+                    <EventCard
+                        key={event.id}
+                        id={event.id}
+                        name={event.name}
+                        description={event.description}
+                        startTime={reformat(event.startTime)}
+                        finishTime={reformat(event.finishTime)}
+                        image={event.image}
                     />
                 ))
             }

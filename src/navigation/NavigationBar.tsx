@@ -25,6 +25,20 @@ const NewEventIcon = (style) => (
     />
 );
 
+const MyEventsIcon = (style) => (
+    <Image
+        style={style}
+        source={{ uri: 'https://akveo.github.io/eva-icons/outline/png/128/person-outline.png' }}
+    />
+);
+
+const AllEventsIcon = (style) => (
+    <Image
+        style={style}
+        source={{ uri: 'https://akveo.github.io/eva-icons/outline/png/128/camera-outline.png' }}
+    />
+);
+
 const NagigationBar = props => {
     const { history, location: { pathname } } = props;
     const [index, setIndex] = useState();
@@ -46,12 +60,12 @@ const NagigationBar = props => {
             indicatorStyle={styles.indicator}
             selectedIndex={index}
             onSelect={handleSelect}>
-            <BottomNavigationTab title="My Events"/>
+            <BottomNavigationTab title="My Events" icon={MyEventsIcon} />
             <BottomNavigationTab
                 title="Create New Event"
                 icon={NewEventIcon}
             />
-            <BottomNavigationTab title="All Public Events"/>
+            <BottomNavigationTab title="All Public Events" icon={AllEventsIcon} />
         </BottomNavigation>
     );
 }

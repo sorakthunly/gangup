@@ -35,6 +35,7 @@ const PublicEvent = props => {
                         description={event.description}
                         startTime={reformat(event.startTime)}
                         finishTime={reformat(event.finishTime)}
+                        image={event.image}
                     />
                 ))
             }

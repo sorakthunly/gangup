@@ -1,4 +1,4 @@
-import { LOAD_PUBLIC_EVENTS, LOAD_PUBLIC_EVENTS_SUCCESS } from './eventsActions';
+import { CREATE_NEW_EVENT, LOAD_PUBLIC_EVENTS, LOAD_PUBLIC_EVENTS_SUCCESS } from './eventsActions';
 
 const initialState = {
     events: [],
@@ -14,10 +14,19 @@ const events = (state = initialState, action) => {
             };
 
         case LOAD_PUBLIC_EVENTS_SUCCESS:
+            const filteredEvents = action.events.filter(event =>
+                !state.events.find(existingEvent => existingEvent.id === event.id));
+
             return {
                 ...state,
-                events: action.events,
+                events: [...state.events, ...filteredEvents],
                 isLoading: false,
+            };
+
+        case CREATE_NEW_EVENT:
+            return {
+                ...state,
+                events: [...state.events, action.event],
             };
 
         default:

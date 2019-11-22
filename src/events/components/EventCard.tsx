@@ -13,11 +13,12 @@ const EventCard = props => {
         startTime,
         finishTime,
         history,
+        image,
     } = props;
 
     return (
         <Card
-            image={{ uri: 'https://c.ndtvimg.com/2018-11/68g3f5sk_event-generic_625x300_16_November_18.jpg'} }
+            image={{ uri: image} }
         >
             <Text h4>
                 {name}

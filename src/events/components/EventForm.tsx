@@ -17,14 +17,15 @@ const EventForm = props => {
     const {
         name,
         description,
-        startDate,
-        finishDate,
+        startTime,
+        finishTime,
         isPublic,
         shouldInviteAll,
         canInviteExtendedGuests,
         maxAdults,
         maxChildren,
         handleChange,
+        location,
     } = props;
     
     return (
@@ -43,14 +44,21 @@ const EventForm = props => {
                 size="large"
                 onChangeText={text => handleChange('description', text)}
             />
-            <Text>Start Date:</Text>
+            <Input
+                label="Location:"
+                value={location}
+                placeholder="Location"
+                size="large"
+                onChangeText={text => handleChange('location', text)}
+            />
+            <Text>Start Time:</Text>
             <Datepicker
-                date={startDate}
+                date={startTime}
                 onSelect={date => handleChange('startDate', date)}
             />
-            <Text>Finish Date:</Text>
+            <Text>Finish Time:</Text>
             <Datepicker
-                date={finishDate}
+                date={finishTime}
                 onSelect={date => handleChange('finishDate', date)}
             />
             <Toggle
@@ -74,7 +82,7 @@ const EventForm = props => {
             />
             <Select
                 disabled={!canInviteExtendedGuests}
-                label="Number of adult guests"
+                label="Number of additional adult guests per invitee"
                 data={selectOptions}
                 placeholder='Please select a number'
                 selectedOption={maxAdults}
@@ -82,7 +90,7 @@ const EventForm = props => {
             />
             <Select
                 disabled={!canInviteExtendedGuests}
-                label="Number of child guests"
+                label="Number of additional child guests per invitee"
                 data={selectOptions}
                 placeholder='Please select a number'
                 selectedOption={maxChildren}

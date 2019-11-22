@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
 
 const Login = props => {
     const { history, isLoading, login } = props;
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('joeyz@benon.com');
+    const [password, setPassword] = useState('*********');
 
     if (isLoading) return <CenteredSpinner />;
 

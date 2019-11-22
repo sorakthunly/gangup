@@ -1,44 +1,46 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Image, ListItem, Overlay, Text } from 'react-native-elements';
+import { uniqueNamesGenerator, starWars } from 'unique-names-generator';
 
 import BaseLayout from '../../baseLayout/BaseLayout';
 import { reformat } from '../../utils/timeHelpers';
 import { Button, Layout, Select, Toggle } from 'react-native-ui-kitten';
 import { ScrollView } from 'react-native';
 
-const mockGuestList = [
-    {
-        name: 'Amy Farha',
-        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-        subtitle: 'Coming',
-    },
-    {
-        name: 'Chris Jackson',
-        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Coming',
-    },
-    {
-        name: 'Amy Farha',
-        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-        subtitle: 'Not coming',
-    },
-    {
-        name: 'Chris Jackson',
-        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Coming',
-    },
-    {
-        name: 'Chris Jackson',
-        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Pending',
-    },
-    {
-        name: 'Chris Jackson',
-        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Pending',
-    },
+import { sendNotificationImmediately } from '../../notification/notificationHelpers';
+
+const config = {
+    dictionaries: [starWars],
+    length: 1,
+};
+
+const mockAvatars = [
+    'https://www.w3schools.com/howto/img_avatar.png',
+    'https://www.w3schools.com/howto/img_avatar.png',
+    'https://st2.depositphotos.com/4967775/11323/v/950/depositphotos_113235752-stock-illustration-avatar-girls-icon-vector-woman.jpg',
+    'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
 ];
+
+const getStatus = () => {
+    const random = Math.random();
+    if (random < 0.3) return 'Coming';
+    if (random < 0.6 && random > 0.3) return 'Not coming';
+    return 'Pending';
+};
+
+const mockList = Array.from({ length: 30 }, (_, index) => {
+    const name = uniqueNamesGenerator(config);
+    return {
+        name,
+        avatarUrl: mockAvatars[index + 1 > mockAvatars.length ? index % mockAvatars.length : index],
+        subtitle: getStatus(),
+    };
+});
+
+const selectOptions = Array.from({ length: 5 }, (_, index) => ({
+    text: String(index + 1),
+}));
 
 const EventDetails = props => {
     const {
@@ -48,17 +50,20 @@ const EventDetails = props => {
             startTime,
             finishTime,
             canInviteExtendedGuests,
+            image,
+            location,
         },
     } = props;
 
     const [shouldShowGuestList, setShouldShowGuestList] = useState(false);
     const [shouldRSVPModal, setShouldRSVPModal] = useState(false);
+    const [isGoing, setIsGoing] = useState(false);
 
     return (
         <BaseLayout>
             <Text h3 style={{ textAlign: 'center', marginTop: 30 }}>{name}</Text>
             <Image
-                source={{ uri: 'https://c.ndtvimg.com/2018-11/68g3f5sk_event-generic_625x300_16_November_18.jpg' }}
+                source={{ uri: image }}
                 style={{ flex: 1, height: 200 }}
             />
             <Layout style={{ paddingHorizontal: 20 }}>
@@ -68,11 +73,12 @@ const EventDetails = props => {
                     <Text style={{ marginHorizontal: 5 }}>to</Text>
                     <Text>{reformat(finishTime)}</Text>
                 </Layout>
+                <Text>Location: {location}</Text>
                 <Text>Can invite extented guests: {canInviteExtendedGuests ? 'YES' : 'NO'}</Text>
                 <Text>Total invited: 130</Text>
                 <Text>Coming: 60</Text>
                 <Text>Not coming: 35</Text>
-                <Text>Not responsed: 45</Text>
+                <Text>Pending: 45</Text>
                 <Text>Additional adult guest: 40</Text>
                 <Text>Additional child guest: 20</Text>
                 <Button
@@ -88,7 +94,7 @@ const EventDetails = props => {
                     onBackdropPress={() => setShouldShowGuestList(false)}
                 >
                     <ScrollView>
-                        {mockGuestList.map((guest, index) => (
+                        {mockList.map((guest, index) => (
                             <ListItem
                                 key={index}
                                 leftAvatar={{ source: { uri: guest.avatarUrl } }}
@@ -106,23 +112,40 @@ const EventDetails = props => {
                     <Layout style={{ paddingVertical: 50 }}>
                         <Toggle
                             style={{ alignSelf: 'flex-start' }}
-                            checked={false}
-                            text="Coming"
+                            checked={isGoing}
+                            text="Going"
+                            onChange={isGoing => setIsGoing(isGoing)}
                         />
                         <Select
                             style={{ marginVertical: 10 }}
-                            label="Number of adult guests"
-                            data={[]}
+                            label="Number of additional adult guests"
+                            selectedOption={{ text: '1'}}
+                            data={[{ text: '1'}]}
                             placeholder='Please select a number'
                             onSelect={() => {}}
                         />
                         <Select
-                            label="Number of child guests"
-                            data={[]}
+                            label="Number of additional child guests"
+                            data={selectOptions}
+                            selectedOption={{ text: '2'}}
                             placeholder='Please select a number'
                             onSelect={() => {}}
                         />
-                        <Button style={{ marginTop: 10 }} status="success">Response</Button>
+                        <Button
+                            style={{ marginTop: 10 }}
+                            status="success"
+                            onPress={() => {
+                                setShouldRSVPModal(false);
+                                setTimeout(() => {
+                                    sendNotificationImmediately({
+                                        title: "Madhava Gurram is coming to Next Year's Christmas Party!",
+                                        body: 'Check Event Details for more information',
+                                    });
+                                }, 3000);
+                            }}
+                        >
+                            Response
+                        </Button>
                     </Layout>
                 </Overlay>
             </Layout>
